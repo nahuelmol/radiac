@@ -1,6 +1,19 @@
+CXX = g++
+CXXFLAGS = -Wall -Iinclude
 
-com:
-	g++ index.cpp -o out.exe
+SRC = index.cpp $(wildcard src/*.cpp)
+OBJ = $(SRC:.cpp=.o)
 
-exe:
-	out.exe
+TARGET = dext
+
+all: $(TARGET)
+
+$(TARGET): $(OBJ)
+	$(CXX) $(OBJ) -o $@
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(OBJ) $(TARGET)
+

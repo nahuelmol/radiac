@@ -1,6 +1,5 @@
 #include <iostream>
-#include "inputs.cpp"
-
+#include "inputs.h"
 
 int main(int argc, char* argv[]) {
     std::string nspecis;
@@ -9,4 +8,3 @@ int main(int argc, char* argv[]) {
     input(nspecis);
     return 0;
 }
-

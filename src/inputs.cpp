@@ -1,5 +1,6 @@
+#include "inputs.h"
+#include <iostream>
 #include <vector>
-
 
 std::pair<std::vector<float>, std::vector<float>> insert_specy(int n){
     std::vector<float> times;
@@ -9,7 +10,7 @@ std::pair<std::vector<float>, std::vector<float>> insert_specy(int n){
     std::cout << "tell me the times " << std::endl;
     std::cin >> ntimes;
     for (int j = 0; j < ntimes; j++) {
-        std::cout << "time " << j <<" : " << std::endl;
+        std::cout << "time " << j <<" :" << std::endl;
         float time;
         std::cin >> time;
         times.push_back(time);
@@ -28,7 +29,6 @@ char name_spec(int i) {
     char ascii = static_cast<char>(i + 65);
     return ascii;
 }
-
 
 void data_analyzer(std::pair<std::vector<float>, std::vector<float>> data, int n){
     std::string formula;
@@ -66,4 +66,3 @@ void input(std::string nspecis){
         std::cout << "you should introduce more than only one specy";
     }
 }
-
