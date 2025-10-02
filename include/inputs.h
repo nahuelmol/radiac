@@ -5,10 +5,10 @@
 #include <vector>
 #include <string>
 
-std::pair<std::vector<float>, std::vector<float>> insert_specy(int n);
+std::pair<std::vector<float>, std::vector<float>> insert_specy(int nspecy, int ntimes);
 char name_spec(int i);
 void data_analyzer(std::pair<std::vector<float>, std::vector<float>> data, int n);
-void input(std::string nspecis);
+void input(int nspecis, int ntimes);
 
 #endif // INPUTS_H
 

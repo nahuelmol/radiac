@@ -2,19 +2,16 @@
 #include <iostream>
 #include <vector>
 
-std::pair<std::vector<float>, std::vector<float>> insert_specy(int n){
+std::pair<std::vector<float>, std::vector<float>> insert_specy(int nspecy, int ntimes){
     std::vector<float> times;
     std::vector<float> percent;
 
-    int ntimes;
-    std::cout << "tell me the times " << std::endl;
-    std::cin >> ntimes;
     for (int j = 0; j < ntimes; j++) {
-        std::cout << "time " << j <<" :" << std::endl;
         float time;
+        std::cout << "time " << j <<" : ";
         std::cin >> time;
         times.push_back(time);
-        for(int i = 0;i < n; i++) {
+        for(int i = 0; i < nspecy; i++) {
             char ascii = static_cast<char>(i + 65);
             float perc = 0.0;
             std::cout << "specy: " << ascii << " -> percent ";
@@ -32,23 +29,25 @@ char name_spec(int i) {
 
 void data_analyzer(std::pair<std::vector<float>, std::vector<float>> data, int n){
     std::string formula;
+    std::vector<float> time     = data.first;
     std::vector<float> percents = data.second;
-    std::vector<float> time = data.first;
     int nacum = n;
     int j = 0;
+    int k = 0;
     std::vector<std::string> formulas;
     for(int i = 0; i < (percents.size()); i++) {
-        //tomo los porcentajes en cada tiempo
-        std::string num = std::to_string(1.0/percents[i]);
-        char name = name_spec(i);
-        formula = formula + num + " N"+name+"(" + std::to_string(time[j])+")" + " = ";
+        //std::string num = std::to_string(1.0/percents[i]);
+        char name = name_spec(k);
+        formula = formula + " N"+name+"(" + std::to_string(time[j])+")" + " = ";
         if(i == (nacum - 1)) {
             nacum = nacum + n;
             std::cout << "time : " << time[j] << std::endl;
             formulas.push_back(formula);
             formula = "";
             j++;
+            k = -1;
         }
+        k++;
     }
     for(j=0; j < time.size(); j++) {
         std::cout << "In "+std::to_string(time[j]) << std::endl;
@@ -56,13 +55,12 @@ void data_analyzer(std::pair<std::vector<float>, std::vector<float>> data, int n
     }
 }
 
-void input(std::string nspecis){
-    int n = stoi(nspecis);
-    if(n > 1) {
-        std::cout << "insert each specy" << std::endl;
-        auto output = insert_specy(n);
-        data_analyzer(output, n);
-    } else if (n == 1) {
+void input(int ns, int nt){
+    if(ns > 1) {
+        std::cout << "insert each specy: " << std::endl;
+        auto output = insert_specy(ns, nt);
+        data_analyzer(output, ns);
+    } else if (ns == 1) {
         std::cout << "you should introduce more than only one specy";
     }
 }
