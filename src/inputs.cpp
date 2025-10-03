@@ -2,11 +2,13 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <string>
 #include "dmaths.h"
 
-std::pair<std::vector<float>, std::vector<float>> insert_specy(int nspecy, int ntimes){
+std::pair<std::vector<float>, std::vector<std::vector<float>>> insert_specy(int nspecy, int ntimes){
     std::vector<float> times;
-    std::vector<float> percent;
+    std::vector<std::vector<float>> percents;
+    std::vector<float> temps;
 
     for (int j = 0; j < ntimes; j++) {
         float time;
@@ -18,10 +20,12 @@ std::pair<std::vector<float>, std::vector<float>> insert_specy(int nspecy, int n
             float perc = 0.0;
             std::cout << "specy: " << ascii << " -> percent ";
             std::cin >> perc;
-            percent.push_back(perc);
+            temps.push_back(perc);
         }
+        percents.push_back(temps);
+        temps.clear();
     }
-    return {times, percent};
+    return {times, percents};
 }
 
 char name_spec(int i) {
@@ -29,51 +33,64 @@ char name_spec(int i) {
     return ascii;
 }
 
-void data_analyzer(std::pair<std::vector<float>, std::vector<float>> data, int n){
+void data_analyzer(std::pair<std::vector<float>, std::vector<std::vector<float>>> data, int n){
     std::string formula;
-    std::vector<float> time     = data.first;
-    std::vector<float> percents = data.second;
+    std::vector<float> times                = data.first;
+    std::vector<std::vector<float>> percents= data.second;
     int nacum = n;
-    int j = 0;
+    int i = 0;
     int k = 0;
     std::vector<std::string> formulas;
-    for(int i = 0; i < (percents.size()); i++) {
-        //std::string num = std::to_string(1.0/percents[i]);
-        char name = name_spec(k);
-        formula = formula + " N"+name+"(" + std::to_string(time[j])+")" + " = ";
-        if(i == (nacum - 1)) {
-            nacum = nacum + n;
-            std::cout << "time : " << time[j] << std::endl;
-            formulas.push_back(formula);
-            formula = "";
-            j++;
-            k = -1;
+    for(std::vector<float> per_time: percents) {
+        for(float perc: per_time){
+            std::string stri = std::to_string(i+1);
+            std::string strp = std::to_string(perc);
+            formula = formula + "N"+ name_spec(k)+ (stri) +"("+(strp)+".N) +";
+            k++;
         }
-        k++;
+        formulas.push_back(formula);
+        formula = "";
+        k=0;
+        i++;
     }
-    for(j=0; j < time.size(); j++) {
-        std::cout << "In "+std::to_string(time[j]) << std::endl;
-        std::cout << "     -> " << formulas[j] << std::endl;
+    for(i=0; i < times.size(); i++) {
+        std::cout << "In "+std::to_string(times[i]) << std::endl;
+        std::cout << "     -> " << formulas[i] << std::endl;
     }
 
-    std::vector<int> options = { 1 };
+    std::vector<int> options = { 1, 2 };
+    int opc = 0;
+    bool out = false;
     do {
-        int opc;
-        std::cout << "tell what to do" << std::end;
-        std::cout << "1.Percent in time.." << std::end;
-        std::cout << "2.Exit" << std::end;
-
         switch(opc) {
+            case 0:
+                std::cout << "starting asistant.." << std::endl;
+                break;
             case 1:
-                std::cout << "making percent in time.." << std::end;
-                percent_it(percents, time);
+                percent_it(times, percents);
+                break;
+            case 2:
+                from_totals(times, percents);
                 break;
             default:
-                std::out << "default" << std::end;
+                std::cout << "doing nothing, exiting!" << std::endl;
                 break;
         }
-    } while(std::find(options.begin(), options.end(), opc));
-    
+
+        std::cout << "tell what to do" << std::endl;
+        std::cout << "1.Percent in time.." << std::endl;
+        std::cout << "2.From totals.." << std::endl;
+        std::cout << "3.Exit" << std::endl;
+        std::cin >> opc;
+        auto it_found = std::find(options.begin(), options.end(), opc);
+        if (it_found == options.end()) {
+            std::cout << "false option" << std::endl;
+            out = false;
+        } else {
+            out = true;
+        }
+    } while(out);
+    std::cout << "Program ending" << std::endl;
 }
 
 void input(int ns, int nt){

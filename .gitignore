@@ -2,3 +2,7 @@
 *.swp
 *.swp~
 *.un~
+*.exe
+
+src/*.o
+*.o
