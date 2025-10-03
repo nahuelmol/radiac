@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <math.h>
+#include <algorithm>
 #include "inputs.h"
 
 void percent_it( std::vector<float> times, std::vector<std::vector<float>> percents) {
@@ -66,8 +67,26 @@ void from_totals(std::vector<float> times, std::vector<std::vector<float>> perce
     }
     std::cout << "\nLambdas are:" << std::endl;
     i = 0;
-    for(float each:lambdas) {
-        std::cout << "lambda_" << name_spec(i) << ": " << each << std::endl;
-        i++;
+    j = 0;
+    float act;
+    std::vector<std::vector<float>> acts;
+    for(float lamb:lambdas) {
+        auto it = std::find(lambdas.begin(), lambdas.end(), lamb);
+        int idx = std::distance(lambdas.begin(), it);
+        std::cout << "lambda_" << name_spec(idx) << ": " << lamb << std::endl;
+        for(std::vector<float> part:parts) {
+            for(float p:part) {
+                act = p * lambdas[i];
+                std::string strj = std::to_string(j);
+                std::cout << "R_" << name_spec(i) << ":" << act << " in "<< strj << std::endl;
+                temps.push_back(act);
+                i++;
+            }
+            acts.push_back(temps);
+            temps.clear();
+            j++;
+            i=0;
+        }
+        j=0;
     }
 }
