@@ -1,6 +1,8 @@
 #include "inputs.h"
 #include <iostream>
 #include <vector>
+#include <algorithm>
+#include "dmaths.h"
 
 std::pair<std::vector<float>, std::vector<float>> insert_specy(int nspecy, int ntimes){
     std::vector<float> times;
@@ -53,6 +55,25 @@ void data_analyzer(std::pair<std::vector<float>, std::vector<float>> data, int n
         std::cout << "In "+std::to_string(time[j]) << std::endl;
         std::cout << "     -> " << formulas[j] << std::endl;
     }
+
+    std::vector<int> options = { 1 };
+    do {
+        int opc;
+        std::cout << "tell what to do" << std::end;
+        std::cout << "1.Percent in time.." << std::end;
+        std::cout << "2.Exit" << std::end;
+
+        switch(opc) {
+            case 1:
+                std::cout << "making percent in time.." << std::end;
+                percent_it(percents, time);
+                break;
+            default:
+                std::out << "default" << std::end;
+                break;
+        }
+    } while(std::find(options.begin(), options.end(), opc));
+    
 }
 
 void input(int ns, int nt){
